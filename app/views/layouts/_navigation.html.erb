@@ -1,0 +1,8 @@
+<p class="navbar-text pull-right">
+  <% if user_signed_in? %>
+      Logged in as <%= current_user.name %>
+      <%= link_to 'Logout', signout_path %>
+  <% else %>
+      <%= link_to 'Login', signin_path %>
+  <% end %>
+</p>
