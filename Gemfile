@@ -8,6 +8,7 @@ gem 'omniauth-twitter'
 gem 'twitter'
 gem 'memcache-client'
 gem 'rinku'
+gem 'thin'
 
 group :assets do
   gem 'less-rails', '~> 2.2.3'
@@ -18,9 +19,9 @@ group :assets do
 end
 
 group :development do
-  gem 'thin'
   gem 'foreman'
   gem 'awesome_print'
+  gem 'heroku'
 end
 
 group :test do
