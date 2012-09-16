@@ -69,9 +69,8 @@ test:
 
 production:
   sessions:
-    default:
+    options:
       database: twitter_favoriter_production
       uri: <%= ENV['MONGOHQ_URL'] %>
-    options:
       skip_version_check: true
       safe: true
