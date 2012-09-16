@@ -1,2 +1,18 @@
-favorite
-<%=raw ap(favorite) %>
+<li>
+  <strong>
+    <%= favorite.producer_names %>
+  </strong>
+
+  adds to favorite:
+  <br><br>
+
+  <blockquote>
+    <%=raw favorite.text_with_links %>
+
+    <small>
+      <cite title="Source Title">
+        <%= favorite.user_name %> @<%= favorite.user_screen_name %><br>
+      </cite>
+    </small>
+  </blockquote>
+</li>

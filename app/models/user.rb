@@ -1,3 +1,6 @@
+require 'tweet/favorite'
+require 'tweet/retweet'
+
 class User
   include Mongoid::Document
 
@@ -40,6 +43,23 @@ class User
   end
 
   def twitter_stream
-    twitter.activity_by_friends.select {|a| TWITTER_ACTIVITIES.include?(a.class) }
+    result = []
+
+    twitter.activity_by_friends.each do |tweet|
+      case tweet.class.name
+      when 'Twitter::Action::Retweet'
+        tweet.target_objects.each {|target| result << Tweet::Retweet.new(target, tweet.targets) }
+      when 'Twitter::Action::Favorite'
+        tweet.targets.each {|target| result << Tweet::Favorite.new(target, tweet.sources) }
+      end
+    end
+
+    result
+  end
+
+  def cached_twitter_stream
+    Rails.cache.fetch("twitter_stream/#{uid}", :expires_in => 1.hour) do
+      twitter_stream
+    end
   end
 end

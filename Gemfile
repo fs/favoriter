@@ -6,12 +6,15 @@ gem 'mongoid', '>= 3.0.3'
 gem 'omniauth', '>= 1.1.0'
 gem 'omniauth-twitter'
 gem 'twitter'
+gem 'memcache-client'
+gem 'rinku'
 
 group :assets do
   gem 'less-rails', '~> 2.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'twitter-bootstrap-rails', '~> 2.1.0'
+  gem 'jquery-rails'
 end
 
 group :development do
@@ -31,4 +34,5 @@ end
 group :development, :test do
   gem 'rspec-rails', '>= 2.11.0'
   gem 'factory_girl_rails', '>= 4.0.0'
+  gem 'dotenv'
 end
