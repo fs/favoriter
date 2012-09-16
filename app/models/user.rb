@@ -12,10 +12,9 @@ class User
 
   attr_accessible :provider, :uid, :name
 
-  TWITTER_ACTIVITIES = [Twitter::Action::Favorite, Twitter::Action::Retweet]
 
   def self.from_omniauth(auth)
-    user = where(auth.slice('provider', 'uid')).first || create_from_omniauth(auth)
+    user = where(auth.slice('provider', 'uid')).first || create_with_omniauth(auth)
     user.refresh_tokens!(auth)
 
     user
@@ -32,7 +31,7 @@ class User
   def refresh_tokens!(auth)
     self.twitter_oauth_token = auth['credentials']['token']
     self.twitter_oauth_token_secret = auth['credentials']['secret']
-    self.save!
+    save!
   end
 
   def twitter
