@@ -10,6 +10,10 @@ describe SessionsController do
         'provider' => current_user.provider,
         'info' => {
           'name' => current_user.name
+        },
+        'credentials' => {
+          'token' => 'token',
+          'secret' => 'secret'
         }
       }
   end
