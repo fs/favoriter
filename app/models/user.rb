@@ -15,10 +15,11 @@ class User
 
   def self.from_omniauth(auth)
     Rails.logger.ap(auth, :info)
+    Rails.logger.ap(auth.slice('provider', 'uid'), :info)
 
     user = where(
       auth.slice('provider', 'uid')
-    ).first ||  create_with_omniauth(auth)
+    ).first || create_with_omniauth(auth)
 
     user.refresh_tokens!(auth)
     user
@@ -33,8 +34,6 @@ class User
   end
 
   def refresh_tokens!(auth)
-
-
     self.twitter_oauth_token = auth['credentials']['token']
     self.twitter_oauth_token_secret = auth['credentials']['secret']
     save!
