@@ -12,16 +12,8 @@ class User
 
   attr_accessible :provider, :uid, :name
 
-
   def self.from_omniauth(auth)
-    Rails.logger.ap(auth, :info)
-    Rails.logger.ap(auth.slice('provider', 'uid'), :info)
-
-    user = where(
-      'provider' => auth['provider'],
-      'uid' => auth['uid']
-    ).first || create_with_omniauth(auth)
-
+    user = where(auth.slice('provider', 'uid')).first || create_with_omniauth(auth)
     user.refresh_tokens!(auth)
     user
   end
