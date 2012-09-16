@@ -72,6 +72,3 @@ production:
     default:
       uri: <%= ENV['MONGOHQ_URL'] %>
       database: twitter_favoriter_production
-      options:
-        skip_version_check: true
-        safe: true
