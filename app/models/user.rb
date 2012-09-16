@@ -16,9 +16,11 @@ class User
   def self.from_omniauth(auth)
     Rails.logger.ap(auth, :info)
 
-    user = where(auth.slice('provider', 'uid')).first || create_with_omniauth(auth)
-    user.refresh_tokens!(auth)
+    user = where(
+      auth.slice('provider', 'uid')
+    ).first ||  create_with_omniauth(auth)
 
+    user.refresh_tokens!(auth)
     user
   end
 

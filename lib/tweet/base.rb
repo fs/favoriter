@@ -28,12 +28,22 @@ module Tweet
       target.user.profile_image_url
     end
 
+    def user_url
+      twitter_url(user_screen_name)
+    end
+
     def producer_names
       @producer_names ||= sources.map { |s| s.name }.join(', ')
     end
 
     def producer_screen_names
       @producer_screen_names ||= sources.map { |s| s.screen_name }.join(', ')
+    end
+
+    private
+
+    def twitter_url(name)
+      "https://twitter.com/#{name}"
     end
   end
 end
