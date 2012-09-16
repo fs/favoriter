@@ -17,6 +17,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'twitter-bootstrap-rails', '~> 2.1.0'
   gem 'jquery-rails'
+  gem 'font-awesome-rails'
 end
 
 group :development do
