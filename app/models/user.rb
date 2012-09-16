@@ -18,7 +18,8 @@ class User
     Rails.logger.ap(auth.slice('provider', 'uid'), :info)
 
     user = where(
-      'provider' => auth['provider'], 'uid' => auth['uid']
+      'provider' => auth['provider'],
+      'uid' => auth['uid']
     ).first || create_with_omniauth(auth)
 
     user.refresh_tokens!(auth)
