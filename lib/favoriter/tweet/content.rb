@@ -35,6 +35,11 @@ class Favoriter::Tweet::Content
     @text.gsub(/(?:f|ht)tps?:\/[^\s]+/, '').strip
   end
 
+  def url
+    return nil unless has_links?  
+    return parsed_content['url']
+  end
+
   private
 
   def url_is_article?
@@ -60,11 +65,7 @@ class Favoriter::Tweet::Content
   end
 
   def parsed_content
-    @parsed_content ||= ReadabilityContentAPI.new(ENV['READABILITY_KEY']).cached_parse(url)
-  end
-
-  def url
-    @url ||= urls.first
+    @parsed_content ||= ReadabilityContentAPI.new(ENV['READABILITY_KEY']).cached_parse(urls.first)
   end
 
   def urls

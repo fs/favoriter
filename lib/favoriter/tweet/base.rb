@@ -2,7 +2,7 @@ module Favoriter::Tweet
   class Base
     attr_reader :target, :sources
 
-    delegate :type, :image, :title, :excerpt, :text,
+    delegate :type, :image, :title, :excerpt, :text, :url,
       to: :content,
       prefix: true
 
@@ -18,12 +18,8 @@ module Favoriter::Tweet
       twitter_url(user_screen_name)
     end
 
-    def producer_names
-      @producer_names ||= sources.map { |s| s.name }.join(', ')
-    end
-
     def producer_screen_names
-      @producer_screen_names ||= sources.map { |s| s.screen_name }.join(', ')
+      @producer_screen_names ||= sources.map { |s| %Q{<a href="#">#{s.screen_name}</a>} }.join(', ').html_safe
     end
 
     private

@@ -1,5 +1,6 @@
 <div class="tweet-content">
-  <%= favorite.content_title %><br>
-  <%= image_tag(favorite.content_image) %><br>
-  <%= favorite.content_text %>
+  article with image<br>
+  title: <%= favorite.content_title %><br>
+  image: <%= link_to(image_tag(favorite.content_image), favorite.content_url) %><br>
+  text: <%= favorite.content_text %>
 </div>
