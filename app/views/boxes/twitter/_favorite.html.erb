@@ -1,19 +1,6 @@
-<li>
-  <strong>
-    <%= favorite.producer_names %>
-  </strong>
-
-  adds to favorite:
-  <br><br>
-
-  <blockquote>
-    <%=raw favorite.text_with_links %>
-
-    <small>
-      <cite title="Source Title">
-        <%= favorite.user_name %>
-        <%= link_to("@#{favorite.user_screen_name}", favorite.user_url) %>
-      </cite>
-    </small>
-  </blockquote>
-</li>
+<%= render  partial: 'boxes/twitter/text',
+            layout: 'boxes/twitter/favorite_layout',
+            locals: {
+              favorite: favorite,
+              content_type: 'text'
+            } %>
