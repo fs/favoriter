@@ -1,4 +1,4 @@
-<li>
+<li class="<%= content_type %>">
   <div class="author">
     <a href="#"><img src="https://twimg0-a.akamaihd.net/profile_images/1609143538/y_e0933b19_normal.jpg"></a>
     <span>
@@ -9,11 +9,10 @@
 
   <%= yield %>
 
-  <div class="tweet-author clearfix">
+  <div class="favouriter clearfix">
     <%= link_to("@#{favorite.user_screen_name}", favorite.user_url) %>
     <%= favorite.user_name %>
   </div>
-
   <div class="actions">
     <a href="#"><i class="icon-share-alt"></i></a>
     <a href="#"><i class="icon-retweet"></i></a>
