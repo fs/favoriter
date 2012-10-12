@@ -1,0 +1,19 @@
+<li>
+  <strong>
+    <%= favorite.producer_names %>
+  </strong>
+
+  adds to favorite:
+  <br><br>
+
+  <blockquote>
+    <%= yield %>
+
+    <small>
+      <cite title="Source Title">
+        <%= favorite.user_name %>
+        <%= link_to("@#{favorite.user_screen_name}", favorite.user_url) %>
+      </cite>
+    </small>
+  </blockquote>
+</li>
