@@ -23,7 +23,7 @@ Favoriter::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   # Use a different cache store in production
-  config.cache_store = :mem_cache_store
+  config.cache_store = :dalli_store
 
   # Do not compress assets
   config.assets.compress = false

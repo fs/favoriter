@@ -1,6 +1,6 @@
-<%= render  partial: 'boxes/twitter/text',
+<%= render  partial: "boxes/twitter/#{favorite.content_type}",
             layout: 'boxes/twitter/favorite_layout',
             locals: {
               favorite: favorite,
-              content_type: 'text'
+              content_type: favorite.content_type
             } %>

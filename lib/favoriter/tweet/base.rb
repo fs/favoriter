@@ -1,31 +1,17 @@
-require 'rinku'
-
-module Tweet
+module Favoriter::Tweet
   class Base
     attr_reader :target, :sources
 
+    delegate :type, :image, :title, :excerpt, :text,
+      to: :content,
+      prefix: true
+
+    delegate :name, :screen_name, :profile_image_url,
+      to: :target_user,
+      prefix: :user
+
     def initialize(target, sources)
       @target, @sources = target, sources
-    end
-
-    def text
-      target.text
-    end
-
-    def text_with_links
-      @text_with_links ||= Rinku.auto_link(target.text)
-    end
-
-    def user_name
-      target.user.name
-    end
-
-    def user_screen_name
-      target.user.screen_name
-    end
-
-    def user_image_url
-      target.user.profile_image_url
     end
 
     def user_url
@@ -42,8 +28,16 @@ module Tweet
 
     private
 
+    def content
+      @content ||= Favoriter::Tweet::Content.new(target.text)
+    end
+
     def twitter_url(name)
       "https://twitter.com/#{name}"
+    end
+
+    def target_user
+      target.user
     end
   end
 end

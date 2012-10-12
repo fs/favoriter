@@ -7,8 +7,10 @@ gem 'mongoid', '>= 3.0.3'
 gem 'omniauth', '>= 1.1.0'
 gem 'omniauth-twitter'
 gem 'twitter'
-gem 'memcache-client'
+gem 'dalli'
 gem 'rinku'
+gem 'httparty'
+gem 'mime-types'
 
 
 group :assets do
@@ -31,6 +33,8 @@ group :test do
   gem 'cucumber-rails', '>= 1.3.0', :require => false
   gem 'launchy', '>= 2.1.2'
   gem 'capybara', '>= 1.1.2'
+  gem 'vcr'
+  gem 'fakeweb'
 end
 
 group :development, :test do

@@ -1,6 +1,3 @@
-require 'tweet/favorite'
-require 'tweet/retweet'
-
 class User
   include Mongoid::Document
 
@@ -30,33 +27,5 @@ class User
     self.twitter_oauth_token = auth['credentials']['token']
     self.twitter_oauth_token_secret = auth['credentials']['secret']
     save!
-  end
-
-  def twitter
-    @twitter ||= Twitter::Client.new(
-      :oauth_token => twitter_oauth_token,
-      :oauth_token_secret => twitter_oauth_token_secret
-    )
-  end
-
-  def twitter_stream
-    result = []
-
-    twitter.activity_by_friends.each do |tweet|
-      case tweet.class.name
-      when 'Twitter::Action::Retweet'
-        tweet.target_objects.each {|target| result << Tweet::Retweet.new(target, tweet.targets) }
-      when 'Twitter::Action::Favorite'
-        tweet.targets.each {|target| result << Tweet::Favorite.new(target, tweet.sources) }
-      end
-    end
-
-    result
-  end
-
-  def cached_twitter_stream
-    Rails.cache.fetch("twitter_stream/#{uid}", :expires_in => 1.hour) do
-      twitter_stream
-    end
   end
 end
