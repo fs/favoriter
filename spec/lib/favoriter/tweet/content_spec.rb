@@ -30,7 +30,7 @@ describe Favoriter::Tweet::Content do
 
     describe '#prepare' do
       before do
-        Favoriter::Tweet::ReadabilityParser.stub(:new).and_return(double('parser', content: 'parsed_content'))
+        Favoriter::Tweet::ReadabilityParser.stub(:new).and_return(double('parser', cached_content: 'parsed_content'))
       end
 
       it 'should call ReadabilityParser' do

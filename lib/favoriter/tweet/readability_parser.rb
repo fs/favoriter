@@ -8,17 +8,23 @@ module Favoriter::Tweet
     cattr_accessor :base_uri
     self.base_uri = 'https://readability.com/api/content/v1/parser'
 
+    cattr_accessor :cache_ttl
+    self.cache_ttl = 12.hours
+
     def initialize(url)
       @url = url
     end
 
     def content
       EventMachine::HttpRequest.use EventMachine::Middleware::JSONResponse
-      EventMachine::HttpRequest.new(api_url(@url)).get.response
+
+      response = EventMachine::HttpRequest.new(api_url(@url)).get.response
+      response.delete('content')
+      response
     end
 
     def cached_content
-      Rails.cache.fetch(cache_key(@url), expires_in: 1.hour) do
+      Rails.cache.fetch(cache_key(@url), expires_in: cache_ttl) do
         content
       end
     end

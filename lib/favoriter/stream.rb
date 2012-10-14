@@ -7,36 +7,48 @@ module Favoriter
     TWEET_TYPES = ['Twitter::Action::Favorite']
 
     cattr_accessor :pool_size
-    self.pool_size = 50
+    self.pool_size = 15
+
+    cattr_accessor :cache_ttl
+    self.cache_ttl = 1.hour
+
+    attr_reader :tweets, :tweets_with_links_idx
 
     def initialize(user)
       @user = user
     end
 
-    def results
-      return @results if @results.present?
+    def fetch
+      @tweets = []
+      @tweets_with_links_idx = []
 
-      @results = []
+      cached_twitter_activity.each do |activity|
+        next unless TWEET_TYPES.include?(activity.class.name)
+
+        activity.targets.each do |target|
+          tweet = Favoriter::Tweet::Favorite.new(target, activity.sources)
+
+          @tweets_with_links_idx << @tweets.size if tweet.content_has_link?
+          @tweets << tweet
+        end
+      end
 
       EM.synchrony do
-        EM::Synchrony::FiberIterator.new(twitter_activity, pool_size).each do |activity|
+        EM::Synchrony::FiberIterator.new(@tweets_with_links_idx, pool_size).each do |index|
+          tweet = @tweets[index]
+          tweet.content_prepare
 
-          activity.targets.each do |target|
-            tweet = Favoriter::Tweet::Favorite.new(target, activity.sources)
-            tweet.content_prepare if tweet.content_has_link?
-
-            @results << tweet
-          end if TWEET_TYPES.include?(activity.class.name)
+          @tweets[index] = tweet
         end
 
         EM.stop
       end
 
-      @results
+      @tweets
     end
 
     def cached_results
-      Rails.cache.fetch([:stream, @user.uid], expires_in: 1.hour) do
+      Rails.cache.fetch([:stream, @user.uid], expires_in: cache_ttl) do
         results
       end
     end
@@ -52,6 +64,12 @@ module Favoriter
 
     def twitter_activity
       twitter.activity_by_friends
+    end
+
+    def cached_twitter_activity
+      Rails.cache.fetch([:twitter_activity, @user.uid], expires_in: cache_ttl) do
+        twitter_activity
+      end
     end
   end
 end
