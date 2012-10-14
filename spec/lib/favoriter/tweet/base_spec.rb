@@ -18,11 +18,16 @@ describe Favoriter::Tweet::Base do
 
   subject { favorite_tweet }
 
+  it { should respond_to(:content_has_link?) }
+  it { should respond_to(:content_prepare) }
+
   it { should respond_to(:content_type) }
   it { should respond_to(:content_image) }
   it { should respond_to(:content_title) }
   it { should respond_to(:content_excerpt) }
   it { should respond_to(:content_text) }
+  it { should respond_to(:content_url) }
+
 
   its('user_name') { should == 'username' }
   its('user_screen_name') { should == 'screen_name' }

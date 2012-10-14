@@ -2,7 +2,7 @@ module Favoriter::Tweet
   class Base
     attr_reader :target, :sources
 
-    delegate :type, :image, :title, :excerpt, :text, :url,
+    delegate :has_link?, :prepare, :type, :image, :title, :excerpt, :text, :url,
       to: :content,
       prefix: true
 

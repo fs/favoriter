@@ -8,10 +8,10 @@ gem 'omniauth', '>= 1.1.0'
 gem 'omniauth-twitter'
 gem 'twitter'
 gem 'dalli'
-gem 'rinku'
-gem 'httparty'
+gem 'em-http-request'
+gem 'em-synchrony'
+gem 'yajl-ruby'
 gem 'mime-types'
-
 
 group :assets do
   gem 'less-rails', '~> 2.2.3'
@@ -33,8 +33,8 @@ group :test do
   gem 'cucumber-rails', '>= 1.3.0', :require => false
   gem 'launchy', '>= 2.1.2'
   gem 'capybara', '>= 1.1.2'
+  gem 'webmock'
   gem 'vcr'
-  gem 'fakeweb'
 end
 
 group :development, :test do
