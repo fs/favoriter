@@ -1,4 +1,5 @@
 require 'uri'
+require 'favoriter/tweet/readability_parser'
 
 module Favoriter::Tweet
   class Content
@@ -14,22 +15,25 @@ module Favoriter::Tweet
 
     def type
       with_link_and_prepared_content('text') do
-        return 'image' if link_url_is_image?
+        return 'image' if link_url_is_image? || link_url_is_page_with_image_only?
         return 'article_with_image' if link_url_is_article_with_image?
         return 'article_without_image' if link_url_is_article?
+
+        'text'
       end
     end
 
     def image
       with_link_and_prepared_content do
         return parsed_content['url'] if link_url_is_image?
+        return parsed_content['lead_image_url'] if link_url_is_page_with_image_only?
         return parsed_content['lead_image_url'] if link_url_is_article_with_image?
       end
     end
 
     def title
       with_link_and_prepared_content do
-        parsed_content['title'] if link_url_is_article?
+        clean_links(parsed_content['title']) if link_url_is_article? || link_url_is_page_with_image_only?
       end
     end
 
@@ -40,7 +44,7 @@ module Favoriter::Tweet
     end
 
     def text
-      @text.gsub(/(?:f|ht)tps?:\/[^\s]+/, '').strip
+      clean_links(@text)
     end
 
     def url
@@ -72,11 +76,15 @@ module Favoriter::Tweet
       parsed_content['lead_image_url'].present?
     end
 
-    def link_url_is_image?
-       media_type == 'image'
+    def link_url_is_page_with_image_only?
+      parsed_content['lead_image_url'].present? && parsed_content['word_count'] == 0
     end
 
-    def media_type
+    def link_url_is_image?
+       link_url_media_type == 'image'
+    end
+
+    def link_url_media_type
       return 'text' if parsed_content['url'].blank?
 
       mime_types =  MIME::Types.of(parsed_content['url'])
@@ -92,6 +100,10 @@ module Favoriter::Tweet
 
     def content_prepared?
       parsed_content.present?
+    end
+
+    def clean_links(text)
+      text.gsub(/(?:f|ht)tps?:\/[^\s]+/, '').strip
     end
   end
 end

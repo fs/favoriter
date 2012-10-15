@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_filter :require_no_user!, only: [:new, :create, :failure]
+  before_filter :authenticate_user!, only: [:destroy]
 
   def new
     redirect_to '/auth/twitter'
@@ -9,15 +11,15 @@ class SessionsController < ApplicationController
     user = User.from_omniauth(env['omniauth.auth'])
     session[:user_id] = user.id
 
-    redirect_to boxes_url, :notice => 'Signed in!'
+    redirect_to root_url, :notice => 'Signed in!'
   end
 
   def destroy
     reset_session
-    redirect_to root_url, :notice => 'Signed out!'
+    redirect_to home_url, :notice => 'Signed out!'
   end
 
   def failure
-    redirect_to root_url, :alert => "Authentication error: #{params[:message].humanize}"
+    redirect_to home_url, :alert => "Authentication error: #{params[:message].humanize}"
   end
 end

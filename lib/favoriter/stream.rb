@@ -2,6 +2,8 @@ require 'em-synchrony'
 require 'em-synchrony/em-http'
 require 'em-synchrony/fiber_iterator'
 
+require 'favoriter/tweet/base'
+
 module Favoriter
   class Stream
     TWEET_TYPES = ['Twitter::Action::Favorite']
@@ -26,14 +28,14 @@ module Favoriter
         next unless TWEET_TYPES.include?(activity.class.name)
 
         activity.targets.each do |target|
-          tweet = Favoriter::Tweet::Favorite.new(target, activity.sources)
+          tweet = Favoriter::Tweet::Base.new(target, activity.sources)
 
           @tweets_with_links_idx << @tweets.size if tweet.content_has_link?
           @tweets << tweet
         end
       end
 
-      EM.synchrony do
+      # EM.synchrony do
         EM::Synchrony::FiberIterator.new(@tweets_with_links_idx, pool_size).each do |index|
           tweet = @tweets[index]
           tweet.content_prepare
@@ -41,16 +43,10 @@ module Favoriter
           @tweets[index] = tweet
         end
 
-        EM.stop
-      end
+      #   EM.stop
+      # end
 
       @tweets
-    end
-
-    def cached_results
-      Rails.cache.fetch([:stream, @user.uid], expires_in: cache_ttl) do
-        results
-      end
     end
 
     private

@@ -1,0 +1,16 @@
+<li class="<%= tweet.content_type %>">
+  <div class="author">
+    <%= image_tag(tweet.user_profile_image_url) %>
+    <span>
+      <span class="name"><%= tweet.user_name %></span><br>
+      <%= link_to("@#{tweet.user_screen_name}", tweet.user_url, class: 'user') %>
+    </span>
+  </div>
+
+  <%= yield %>
+
+  <div class="favouriter clearfix">
+    <%= tweet.producer_screen_names %>
+  </div>
+  <a href="#" class="add-to-favourites"><i class="icon-star"></i></a>
+</li>

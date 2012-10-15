@@ -96,5 +96,22 @@ describe Favoriter::Tweet::Content do
       its(:title) { should == 'article title' }
       its(:excerpt) { should == 'article excerpt' }
     end
+
+    context 'to article with image and without text' do
+      let(:parsed_content) do
+        {
+          'url' => 'http://example.com/article.html',
+          'excerpt' => '',
+          'word_count' =>0,
+          'lead_image_url' => 'http://example.com/lead_image_url.jpeg',
+          'title' => 'Title with link. http://example.com'
+        }
+      end
+
+      it { should have_link }
+      its(:type) { should == 'image' }
+      its(:image) { should == 'http://example.com/lead_image_url.jpeg' }
+      its(:title) { should == 'Title with link.' }
+    end
   end
 end

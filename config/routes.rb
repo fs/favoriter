@@ -4,8 +4,9 @@ Favoriter::Application.routes.draw do
   match '/signin' => 'sessions#new', :as => :signin
   match '/signout' => 'sessions#destroy', :as => :signout
   match '/auth/failure' => 'sessions#failure'
+  match '/home' => 'home#index', :as => :home
 
   resources :boxes, :only => [:index]
 
-  root :to => 'home#index'
+  root :to => 'boxes#index'
 end

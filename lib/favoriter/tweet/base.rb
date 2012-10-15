@@ -1,3 +1,5 @@
+require 'favoriter/tweet/content'
+
 module Favoriter::Tweet
   class Base
     attr_reader :target, :sources

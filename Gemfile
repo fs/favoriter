@@ -10,6 +10,7 @@ gem 'twitter'
 gem 'dalli'
 gem 'em-http-request'
 gem 'em-synchrony'
+gem 'rack-fiber_pool'
 gem 'yajl-ruby'
 gem 'mime-types'
 

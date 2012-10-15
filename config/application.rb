@@ -17,7 +17,6 @@ end
 
 module Favoriter
   class Application < Rails::Application
-
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
       g.view_specs false
